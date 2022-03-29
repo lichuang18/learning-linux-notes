@@ -1,3 +1,34 @@
 perf  
-  -perf stat 在没有root权限的情况下，执行perf stat命令只会统计用户空间中发生的事件
+  stat      对全局性能进行统计
+  list      查看当前系统支持的性能事件
+  record    记录信息到perf.data
+  report    生成报告
+  sched     分析内核调度器性能
+  test      对系统进行健全性测试
+  mem       分析内存slab性能
+  bench     对系统性能进行摸底
+  kmem      针对(内核内存)slab子系统性能分析
+  kvm       针对kvm虚拟化分析
+  evlist    列出记录的性能事件
+  inject    读取perf record工具记录的事件流，并将其定向到标准输出
+  diff      对两个记录进行diff
+  lock      分析锁性能
+  timechart #perf timechart record记录事件，perf timechart生成output.svg文档，可视化工具 
+  top       可以实时查看当前系统进程函数占用率情况
+  trace     记录系统调用轨迹
+  probe     可以自定义动态事件
+  annotate  显示perf.data函数代码
+  archive   将相关符号打包，方便在其它机器进行分析
+  
+  
+  
+  -perf stat 在没有root权限的情况下，执行perf stat命令只会统计用户空间中发生的事件(:u 表示用户空间)
   示例：  perf stat ./t1     perf stat ls
+          perf stat -p 3592 sleep 10
+          perf stat -a -A sleep seconds统计CPU聚合计数禁用的事件数量
+  -perf record
+   不加具体的记录对象，他会持续记录，直到ctrl+c停止
+        --call-graph    捕获调用图数据
+        perf record --call-graph method command      method包括fp（frame pointer）、dwarf、lbr（last branch）
+         perf record -C 0,1 sleep seconds   记录多cpu信息，用“，”分割
+         perf record -C 0-2 sleep seconds
