@@ -72,3 +72,25 @@ perf
         perf record --call-graph method command      method包括fp（frame pointer）、dwarf、lbr（last branch）
          perf record -C 0,1 sleep seconds   记录多cpu信息，用“，”分割
          perf record -C 0-2 sleep seconds
+flame graph（火焰图）
+  git clone https://github.com/brendangregg/FlameGraph.git
+  不需要额外安装，git下来就行，能够进入该文件执行脚本即可
+  需要和perf联用，使用perf record记录的perf.data数据来生成火焰图
+  火焰图含义：
+    y 轴表示调用栈，每一层都是一个函数。调用栈越深，火焰就越高，顶部就是正在执行的函数，下方都是它的父函数。
+    x 轴表示抽样数，如果一个函数在 x 轴占据的宽度越宽，就表示它被抽到的次数多，即执行的时间长。注意，x 轴不代表时间，而是所有的调用栈合并后，按字母顺序排列的。
+    火焰图就是看顶层的哪个函数占据的宽度最大。只要有"平顶"（plateaus），就表示该函数可能存在性能问题。
+  
+  
+  
+  具体步骤：
+    1.使用perf生成perf.data
+      实例：perf record -F 99 -a -g -- sleep 60  对所有（-a）CPU进行以99Hz进行采集，每秒99次，
+                                                如果99次都返回同一个函数名，说明CPU这一秒都在执行这条指令，可能存在问题
+                                                执行60s会生成perf.data文件   -g表示记录调用栈
+    2.perf script -i perf.data &> perf.unfold
+    3../FlameGraph/stackcollapse-perf.pl perf.unfold &> perf.folded
+    4../FlameGraph/flamegraph.pl perf.folded > perf.svg
+                                                
+                                                
+  
