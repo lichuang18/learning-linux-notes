@@ -72,6 +72,10 @@ perf
         perf record --call-graph method command      method包括fp（frame pointer）、dwarf、lbr（last branch）
          perf record -C 0,1 sleep seconds   记录多cpu信息，用“，”分割
          perf record -C 0-2 sleep seconds
+
+
+
+
 flame graph（火焰图）
   git clone https://github.com/brendangregg/FlameGraph.git
   不需要额外安装，git下来就行，能够进入该文件执行脚本即可
