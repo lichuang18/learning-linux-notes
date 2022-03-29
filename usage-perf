@@ -1,0 +1,3 @@
+perf  
+  -perf stat 在没有root权限的情况下，执行perf stat命令只会统计用户空间中发生的事件
+  示例：  perf stat ./t1     perf stat ls
